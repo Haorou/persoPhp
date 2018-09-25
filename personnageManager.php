@@ -8,7 +8,7 @@
           $this->setDb($db);
         }
 
-        public function setDb($db)
+        public function setDb(PDO $db)
         {
             $this->_db = $db;
         }
@@ -44,11 +44,63 @@
         public function getList()
         {
             $selectPerso = $this->_db->query("SELECT * FROM personnage");
+            $listeDePersonnages = [];
+
             while($perso = $selectPerso->fetch())
             {
                 $listeDePersonnages[] = new Personnage($perso);
             }
+            
             return $listeDePersonnages;
+        }
+
+        public function count()
+        {
+            $count = $this->_db->query("SELECT count(*) FROM personnage");
+        }
+
+        public function exists($info)
+        {
+            $isExist = False;
+            if(is_int($info))
+            {
+                $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE id = :id");
+                $isExist->execute(array(
+                                "id" => $info));
+            }
+            else
+            {
+                if(is_string($info))
+                {
+                    $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE nom = :nom");
+                    $isExist->execute(array(
+                                    "nom" => $info));
+                }
+            }
+            return $isExist;
+        }
+
+        #### A METTRE A JOUR A PARTIR DICI !!!!!!!!
+        public function get($info)
+        {
+
+            $isExist = False;
+            if(is_int($info))
+            {
+                $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE id = :id");
+                $isExist->execute(array(
+                                "id" => $info));
+            }
+            else
+            {
+                if(is_string($info))
+                {
+                    $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE nom = :nom");
+                    $isExist->execute(array(
+                                    "nom" => $info));
+                }
+            }
+            return $isExist;
         }
 
 
