@@ -43,7 +43,12 @@
 
         public function getList()
         {
-            
+            $selectPerso = $this->_db->query("SELECT * FROM personnage");
+            while($perso = $selectPerso->fetch())
+            {
+                $listeDePersonnages[] = new Personnage($perso);
+            }
+            return $listeDePersonnages;
         }
 
 
