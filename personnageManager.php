@@ -15,11 +15,13 @@
 
         public function add(Personnage $perso)
         {
-            $addPerso = $this->_db->prepare("INSERT INTO personnage(nom, degats) 
-                                        VALUES(:nom, :degats)");
+            $addPerso = $this->_db->prepare("INSERT INTO personnage(nom) 
+                                        VALUES(:nom)");
             $addPerso->execute(array(
-                                "nom" => $perso->nom(),
-                                "degats" => $perso->degats()));
+                                "nom" => $perso->nom()));
+
+            $perso->hydrate(['id' => $this->_db->lastInsertId(),
+                            'degats' => 0,]);
         }
 
         public function update(Personnage $perso)
@@ -56,51 +58,41 @@
 
         public function count()
         {
-            $count = $this->_db->query("SELECT count(*) FROM personnage");
+            return $this->_db->query("SELECT COUNT(*) FROM personnage")->fetchColumn();
         }
 
         public function exists($info)
         {
-            $isExist = False;
-            if(is_int($info))
+            if (is_int($info)) // On veut voir si tel personnage ayant pour id $info existe.
             {
-                $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE id = :id");
-                $isExist->execute(array(
-                                "id" => $info));
+              return (bool) $this->_db->query('SELECT COUNT(*) FROM personnages WHERE id = '.$info)->fetchColumn();
             }
-            else
-            {
-                if(is_string($info))
-                {
-                    $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE nom = :nom");
-                    $isExist->execute(array(
-                                    "nom" => $info));
-                }
-            }
-            return $isExist;
+            
+            // Sinon, c'est qu'on veut vérifier que le nom existe ou pas.
+            
+            $q = $this->_db->prepare('SELECT COUNT(*) FROM personnages WHERE nom = :nom');
+            $q->execute([':nom' => $info]);
+            
+            return (bool) $q->fetchColumn();
         }
 
         #### A METTRE A JOUR A PARTIR DICI !!!!!!!!
         public function get($info)
         {
-
-            $isExist = False;
-            if(is_int($info))
+            if (is_int($info))
             {
-                $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE id = :id");
-                $isExist->execute(array(
-                                "id" => $info));
+              $q = $this->_db->query('SELECT id, nom, degats FROM personnages WHERE id = '.$info);
+              $donnees = $q->fetch(PDO::FETCH_ASSOC);
+              
+              return new Personnage($donnees);
             }
             else
             {
-                if(is_string($info))
-                {
-                    $isExist = $this->_db->prepare("SELECT * FROM personnage WHERE nom = :nom");
-                    $isExist->execute(array(
-                                    "nom" => $info));
-                }
+              $q = $this->_db->prepare('SELECT id, nom, degats FROM personnages WHERE nom = :nom');
+              $q->execute([':nom' => $info]);
+            
+              return new Personnage($q->fetch(PDO::FETCH_ASSOC));
             }
-            return $isExist;
         }
 
 
