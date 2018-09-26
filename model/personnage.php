@@ -18,7 +18,8 @@
         {
             foreach($donnes as $cles => $values)
             {
-                $method = "set" .uc_first($cles);
+                $method = "set" .ucfirst($cles);
+
                 if(method_exists($this,$method))
                 {
                     $this->$method($values);

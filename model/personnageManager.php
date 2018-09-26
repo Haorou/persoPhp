@@ -1,11 +1,14 @@
 <?php
-    class PersonnageManager
+require_once("model/ManagerPDO.php");
+
+    class PersonnageManager extends managerPDO
     {
         private $_db;
 
-        public function __construct($db)
+        public function __construct()
         {
-          $this->setDb($db);
+            $db = $this->dbConnect();
+            $this->setDb($db);
         }
 
         public function setDb(PDO $db)
@@ -15,7 +18,7 @@
 
         public function add(Personnage $perso)
         {
-            $addPerso = $this->_db->prepare("INSERT INTO personnage(nom) 
+            $addPerso = $this->_db->prepare("INSERT INTO personnages(nom) 
                                         VALUES(:nom)");
             $addPerso->execute(array(
                                 "nom" => $perso->nom()));
@@ -26,7 +29,7 @@
 
         public function update(Personnage $perso)
         {
-            $updatePerso = $this->_db->prepare("UPDATE personnage
+            $updatePerso = $this->_db->prepare("UPDATE personnages
                                         SET nom = :nom, degats = :degats
                                         WHERE id = :id)");
             $updatePerso->execute(array(
@@ -37,7 +40,7 @@
 
         public function delete(Personnage $perso)
         {
-            $deletePerso = $this->_db->prepare("DELETE FROM personnage
+            $deletePerso = $this->_db->prepare("DELETE FROM personnages
                                         WHERE id = :id)");
             $deletePerso->execute(array(
                                 "id" => $perso->id()));
@@ -45,7 +48,7 @@
 
         public function getList()
         {
-            $selectPerso = $this->_db->query("SELECT * FROM personnage");
+            $selectPerso = $this->_db->query("SELECT * FROM personnages");
             $listeDePersonnages = [];
 
             while($perso = $selectPerso->fetch())
@@ -58,7 +61,7 @@
 
         public function count()
         {
-            return $this->_db->query("SELECT COUNT(*) FROM personnage")->fetchColumn();
+            return $this->_db->query("SELECT COUNT(*) FROM personnages")->fetchColumn();
         }
 
         public function exists($info)
