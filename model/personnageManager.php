@@ -76,7 +76,6 @@
             return (bool) $q->fetchColumn();
         }
 
-        #### A METTRE A JOUR A PARTIR DICI !!!!!!!!
         public function get($info)
         {
             if (is_int($info))
