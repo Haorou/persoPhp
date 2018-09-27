@@ -9,7 +9,7 @@
 
     function creerPersonnage($nom)
     {
-        $perso = new Personnage(["nom" => $nom]);
+        $perso = new Personnage(["nom" => $nom, "niveau" => 1, "experience" => 0, "puissance" => 1]);
         $manager = new PersonnageManager();
 
         if (!$perso->nomValide())

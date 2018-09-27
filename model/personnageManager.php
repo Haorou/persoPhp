@@ -18,30 +18,40 @@ require_once("model/ManagerPDO.php");
 
         public function add(Personnage $perso)
         {
-            $addPerso = $this->_db->prepare("INSERT INTO personnages(nom) 
-                                        VALUES(:nom)");
+            $addPerso = $this->_db->prepare("INSERT INTO personnages(nom, niveau, experience, puissance) 
+                                        VALUES(:nom,:niveau,:experience,:puissance)");
             $addPerso->execute(array(
-                                "nom" => $perso->nom()));
+                                "nom" => $perso->nom(),
+                                "niveau" => $perso->niveau(),
+                                "experience" => $perso->experience(),
+                                "puissance" => $perso->puissance()
+                            ));
 
             $perso->hydrate(['id' => $this->_db->lastInsertId(),
+                            'experience' => 0,
+                            'puissance' =>1,
+                            'niveau' =>1,
                             'degats' => 0,]);
         }
 
         public function update(Personnage $perso)
         {
             $updatePerso = $this->_db->prepare("UPDATE personnages
-                                        SET nom = :nom, degats = :degats
+                                        SET nom = :nom, degats = :degats, puissance = :puissance, experience = :experience, niveau = :niveau
                                         WHERE id = :id");
             $updatePerso->execute(array(
                                 "nom" => $perso->nom(),
                                 "degats" => $perso->degats(),
+                                'experience' => $perso->experience(),
+                                'niveau' => $perso->niveau(),
+                                'puissance' => $perso->puissance(),
                                 "id" => $perso->id() ) );
         }
 
         public function delete(Personnage $perso)
         {
             $deletePerso = $this->_db->prepare("DELETE FROM personnages
-                                        WHERE id = :id)");
+                                        WHERE id = :id");
             $deletePerso->execute(array(
                                 "id" => $perso->id()));
         }
@@ -83,7 +93,7 @@ require_once("model/ManagerPDO.php");
         {
             if (is_int($info))
             {
-              $q = $this->_db->query('SELECT id, nom, degats FROM personnages WHERE id = '.$info);
+              $q = $this->_db->query('SELECT * FROM personnages WHERE id = '.$info);
               $donnees = $q->fetch(PDO::FETCH_ASSOC);
               
               return new Personnage($donnees);

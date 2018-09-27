@@ -2,7 +2,6 @@
 
     class ManagerPDO
     {
-
         function dbConnect()
         {
             $db = new PDO("mysql:host=localhost;dbname=combats;charset=utf8","root","");

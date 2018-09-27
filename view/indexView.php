@@ -25,7 +25,9 @@
 
         <?php if(isset($_SESSION["perso"])) { ?>
             <p>Personnage sélectionné : <?= $_SESSION["perso"]->nom()?><br>
-                Il a pris : <?= $_SESSION["perso"]->degats() ?> point(s) de dégats
+                Il a pris : <?= $_SESSION["perso"]->degats() ?> point(s) de dégats.
+                Il a <?= $_SESSION["perso"]->experience() ?> sur <?= $_SESSION["perso"]->plafond() ?>.
+                Sa force est égal à <?= $_SESSION["perso"]->puissance() ?>.
             </p>
 
             <?php 
