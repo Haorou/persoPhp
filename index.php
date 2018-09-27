@@ -16,6 +16,20 @@ try
                 utiliserPersonnage($_POST["nom"]);
             }
         }
+        elseif($_GET["action"] == "deconnexion")
+        {
+            if(isset($_POST["deconnexion"]))
+            {
+                deconnexionPersonnage();
+            }
+        }
+        elseif($_GET["action"] == "frapper")
+        {
+            if(isset($_POST["nom"]) && isset($_POST["frapper"]))
+            {
+                frapperPersonnage($_POST["nom"]);
+            }
+        }
     }
    else
    {

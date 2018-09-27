@@ -22,5 +22,22 @@
                 <input type="submit" value="Utiliser ce personnage" name="utiliser" />
             </p>
         </form>
+
+        <?php if(isset($_SESSION["perso"])) { ?>
+            <p>Personnage sélectionné : <?= $_SESSION["perso"]->nom()?><br>
+                Il a pris : <?= $_SESSION["perso"]->degats() ?> point(s) de dégats
+            </p>
+
+            <form action="index.php?action=frapper" method="post">
+                <input type="text" value="" name="id"/>
+                <input type="submit" value="frapper" name="frapper"/>
+            </form>
+
+            <form action="index.php?action=deconnexion" method="post">
+                <input type="submit" value="deconnexion" name="deconnexion"/>
+            </form>
+        <?php } ?>
+
+
     </body>
 </html>
