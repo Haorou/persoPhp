@@ -31,11 +31,11 @@ require_once("model/ManagerPDO.php");
         {
             $updatePerso = $this->_db->prepare("UPDATE personnages
                                         SET nom = :nom, degats = :degats
-                                        WHERE id = :id)");
+                                        WHERE id = :id");
             $updatePerso->execute(array(
                                 "nom" => $perso->nom(),
                                 "degats" => $perso->degats(),
-                                "id" => $perso->id()));
+                                "id" => $perso->id() ) );
         }
 
         public function delete(Personnage $perso)

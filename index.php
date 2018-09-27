@@ -25,9 +25,13 @@ try
         }
         elseif($_GET["action"] == "frapper")
         {
-            if(isset($_POST["nom"]) && isset($_POST["frapper"]))
+            if(isset($_GET["id"]))
             {
-                frapperPersonnage($_POST["nom"]);
+                frapperPersonnage($_GET["id"]);
+            }
+            else
+            {
+                throw new Exception("Frapper ou Id are not set");
             }
         }
     }

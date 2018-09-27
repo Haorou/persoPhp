@@ -28,10 +28,15 @@
                 Il a pris : <?= $_SESSION["perso"]->degats() ?> point(s) de dégats
             </p>
 
-            <form action="index.php?action=frapper" method="post">
-                <input type="text" value="" name="id"/>
-                <input type="submit" value="frapper" name="frapper"/>
-            </form>
+            <?php 
+            $persos = $manager->getList();
+
+            foreach($persos as $perso)
+            {?>
+                <a href="index.php?action=frapper&amp;id=<?=$perso->id()?>">Frapper <?= $perso->nom() ?></a><br/>
+            <?php
+            }
+            ?>
 
             <form action="index.php?action=deconnexion" method="post">
                 <input type="submit" value="deconnexion" name="deconnexion"/>
